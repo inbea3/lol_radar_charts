@@ -7,7 +7,7 @@
 - 网页支持位置筛选、响应式布局和图表放大预览。
 - 页面源码位于 `docs/`，图表数据清单由 `scripts/build_site_data.py` 自动生成。
 
-> 首次部署需要在仓库 Settings → Pages 中将 Build and deployment 的 Source 设为 GitHub Actions。若工作流已自动启用 Pages，则无需手动设置。
+> **首次部署前需要仓库所有者手动启用 Pages：** 打开 Settings → Pages，将 Build and deployment 的 Source 设为 GitHub Actions。GitHub Actions 的仓库令牌没有创建 Pages 站点的管理权限；完成这一次设置后，后续更新会自动部署。
 
 
 从 OP.GG esports 的 GraphQL 拉取赛事选手统计数据，并生成分位置（`Top / Jug / Mid / Bot / Sup`）雷达图 PNG。
