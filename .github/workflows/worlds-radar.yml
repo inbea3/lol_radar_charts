@@ -7,6 +7,9 @@ on:
       - ".github/workflows/worlds-radar.yml"
       - "backend/main.py"
       - "requirements.txt"
+      - "frontend/**"
+      - "docs/**"
+      - "scripts/**"
   workflow_dispatch:
     inputs:
       tournament_id:
@@ -20,11 +23,20 @@ on:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
   generate-radar-charts:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: \${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -41,17 +53,28 @@ jobs:
 
       - name: Fetch OP.GG data and generate charts
         env:
-          TOURNAMENT_ID: ${{ inputs.tournament_id || '1443' }}
-          POSITIONS: ${{ inputs.positions || 'Top Jug Mid Bot Sup' }}
+          TOURNAMENT_ID: \${{ inputs.tournament_id || '1443' }}
+          POSITIONS: \${{ inputs.positions || 'Top Jug Mid Bot Sup' }}
         run: |
           set -o pipefail
           mkdir -p radar_charts
+          find radar_charts -maxdepth 1 -type f -name '*.png' -delete
           for position in $POSITIONS; do
             echo "===== tournament=$TOURNAMENT_ID position=$position ====="
             python backend/main.py --tournament "$TOURNAMENT_ID" --position "$position" 2>&1 | tee -a run.log
           done
           echo "===== Generated files ====="
-          find radar_charts -maxdepth 1 -type f -name '*.png' -printf '%f (%s bytes)\\n' | tee -a run.log
+          find radar_charts -maxdepth 1 -type f -name '*.png' -printf '%f (%s bytes)\n' | tee -a run.log
+
+      - name: Build website data
+        env:
+          TOURNAMENT_ID: \${{ inputs.tournament_id || '1443' }}
+        run: python scripts/build_site_data.py
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Upload radar charts and execution log
         if: always()
@@ -63,3 +86,12 @@ jobs:
             run.log
           if-no-files-found: warn
           retention-days: 14
+
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
