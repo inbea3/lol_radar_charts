@@ -9,11 +9,20 @@ ASSETS, DATA = DOCS / "assets", DOCS / "data"
 ROLE_ORDER = ["Top", "Jug", "Mid", "Bot", "Sup"]
 ROLE_NAMES = {"Top":"上单","Jug":"打野","Mid":"中单","Bot":"ADC","Sup":"辅助"}
 TOURNAMENT_NAMES = {
- "1353":"2026 LCK Split1 Group Stage","1354":"2026 LPL Split1 Group Stage",
- "1360":"2026 LCK Split1 Play-In","1372":"2026 LPL Split1 Playoffs",
- "1359":"2026 LCK Split1 Playoffs","1374":"2026 First-Stand Playoffs",
- "1375":"2026 First-Stand Group A","1376":"2026 First-Stand Group B",
- "1443":"2026 Worlds Knockout"
+ "1353": "2026 LCK Cup Group Stage",
+ "1354": "2026 LPL Split1 Group Stage",
+ "1360": "2026 LCK Cup Play-In",
+ "1372": "2026 LPL Split1 Playoffs",
+ "1359": "2026 LCK Cup Playoffs",
+ "1374": "2026 First-Stand Playoffs",
+ "1375": "2026 First-Stand Group A",
+ "1376": "2026 First-Stand Group B",
+ "1392": "2026 LPL Split2 Group Ascend",
+ "1393": "2026 LPL Split2 Group Nirvana",
+ "1386": "2026 LCK Round 1–2",
+ "1442": "2026 Worlds Swiss Stage",
+ "1443": "2026 Worlds Knockout",
+ "1444": "2026 Worlds Play-In",
 }
 def main():
     tournament_id = os.environ.get("TOURNAMENT_ID", "1443")
