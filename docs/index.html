@@ -45,7 +45,7 @@ a{color:inherit;text-decoration:none}.shell{max-width:1320px;margin:auto;padding
     <div class="event-groups" id="eventGroups"></div>
   </div>
   <div class="control-group">
-    <div class="control-label"><strong>02 / 选择位置</strong><span>可多选，支持一次生成多个位置</span></div>
+    <div class="control-label"><strong>02 / 选择位置</strong><span>选择一个位置，即时切换对应图表</span></div>
     <div class="role-buttons" id="roleButtons">
       <button class="role-btn active" data-role="Top">TOP · 上单</button><button class="role-btn active" data-role="Jug">JUG · 打野</button><button class="role-btn active" data-role="Mid">MID · 中单</button><button class="role-btn active" data-role="Bot">BOT · ADC</button><button class="role-btn active" data-role="Sup">SUP · 辅助</button>
     </div>
@@ -104,6 +104,8 @@ function renderEventButtons(){
 }
 function selectEvent(id){
  selectedTournament=id;
+ const candidate=currentEvent();
+ if(!candidate?.roles?.[selectedRole]?.available) selectedRole=candidate?.availableRoles?.[0]||"Top";
  document.querySelectorAll(".event-btn").forEach(b=>b.classList.toggle("active",b.dataset.event===id));
  const event=currentEvent();
  document.getElementById("selectedEventPill").textContent="当前赛事 · "+id;
