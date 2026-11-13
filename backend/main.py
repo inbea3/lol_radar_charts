@@ -317,6 +317,7 @@ TOURNAMENT_MAPPING = {
     "1374": "2026 First-Stand Playoffs",
     "1375": "2026 First-Stand Group A",
     "1376": "2026 First-Stand Group B",
+    "1443": "2026 Worlds Knockout",
 }
 
 CATEGORIES_MAPPING = {
