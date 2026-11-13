@@ -1,5 +1,15 @@
 # LOL_Radar_charts
 
+## 在线数据展示
+
+- **网站入口：** https://inbea3.github.io/lol_radar_charts/
+- 每次 GitHub Actions 成功运行后，会自动更新网页中的赛事雷达图。
+- 网页支持位置筛选、响应式布局和图表放大预览。
+- 页面源码位于 `docs/`，图表数据清单由 `scripts/build_site_data.py` 自动生成。
+
+> 首次部署需要在仓库 Settings → Pages 中将 Build and deployment 的 Source 设为 GitHub Actions。若工作流已自动启用 Pages，则无需手动设置。
+
+
 从 OP.GG esports 的 GraphQL 拉取赛事选手统计数据，并生成分位置（`Top / Jug / Mid / Bot / Sup`）雷达图 PNG。
 
 ## 工作原理
@@ -58,6 +68,7 @@ python .\frontend\gradio_app.py
 - `1374`：`2026 First-Stand Playoffs`
 - `1375`：`2026 First-Stand Group A`
 - `1376`：`2026 First-Stand Group B`
+- `1443`：`2026 Worlds Knockout`
 
 ## 输出目录
 
