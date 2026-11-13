@@ -1,0 +1,65 @@
+name: Run Worlds 2026 radar charts
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - ".github/workflows/worlds-radar.yml"
+      - "backend/main.py"
+      - "requirements.txt"
+  workflow_dispatch:
+    inputs:
+      tournament_id:
+        description: "OP.GG tournament ID"
+        required: true
+        default: "1443"
+      positions:
+        description: "Positions to generate (space-separated)"
+        required: true
+        default: "Top Jug Mid Bot Sup"
+
+permissions:
+  contents: read
+
+jobs:
+  generate-radar-charts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Fetch OP.GG data and generate charts
+        env:
+          TOURNAMENT_ID: ${{ inputs.tournament_id || '1443' }}
+          POSITIONS: ${{ inputs.positions || 'Top Jug Mid Bot Sup' }}
+        run: |
+          set -o pipefail
+          mkdir -p radar_charts
+          for position in $POSITIONS; do
+            echo "===== tournament=$TOURNAMENT_ID position=$position ====="
+            python backend/main.py --tournament "$TOURNAMENT_ID" --position "$position" 2>&1 | tee -a run.log
+          done
+          echo "===== Generated files ====="
+          find radar_charts -maxdepth 1 -type f -name '*.png' -printf '%f (%s bytes)\\n' | tee -a run.log
+
+      - name: Upload radar charts and execution log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: worlds-2026-radar-charts
+          path: |
+            radar_charts/*.png
+            run.log
+          if-no-files-found: warn
+          retention-days: 14
