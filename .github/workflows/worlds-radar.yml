@@ -36,7 +36,7 @@ jobs:
     timeout-minutes: 15
     environment:
       name: github-pages
-      url: \${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -53,8 +53,8 @@ jobs:
 
       - name: Fetch OP.GG data and generate charts
         env:
-          TOURNAMENT_ID: \${{ inputs.tournament_id || '1443' }}
-          POSITIONS: \${{ inputs.positions || 'Top Jug Mid Bot Sup' }}
+          TOURNAMENT_ID: ${{ inputs.tournament_id || '1443' }}
+          POSITIONS: ${{ inputs.positions || 'Top Jug Mid Bot Sup' }}
         run: |
           set -o pipefail
           mkdir -p radar_charts
@@ -68,7 +68,7 @@ jobs:
 
       - name: Build website data
         env:
-          TOURNAMENT_ID: \${{ inputs.tournament_id || '1443' }}
+          TOURNAMENT_ID: ${{ inputs.tournament_id || '1443' }}
         run: python scripts/build_site_data.py
 
       - name: Configure GitHub Pages
