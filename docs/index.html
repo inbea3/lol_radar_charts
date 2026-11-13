@@ -169,6 +169,26 @@ async function init(){
   document.getElementById("updatedText").textContent="CATALOG NOT READY";
  }
 }
+const metrics=[
+ ["KDA","击杀 / 死亡 / 助攻比","OP.GG 返回的 KDA 综合指标，用于概览选手参与击杀与生存表现。常见公式为 (击杀+助攻)/死亡，但零死亡时的处理方式以数据源为准。","综合表现"],
+ ["Kills","击杀数","选手击杀敌方英雄的次数。通常越高代表直接击杀贡献越多，但需要结合位置和比赛时长判断。","原始计数"],
+ ["Deaths","死亡数","选手被击杀的次数。通常越低越好，但不能脱离承担开团、保护队友等职责单独评价。","原始计数"],
+ ["Assists","助攻数","选手参与队友击杀所获得的助攻次数，反映团队击杀参与。","原始计数"],
+ ["DPM","每分钟伤害","Damage Per Minute。选手每分钟对敌方英雄造成的伤害，常用于衡量持续输出能力。","越高通常越好"],
+ ["DTPM","每分钟承伤","Damage Taken Per Minute。选手每分钟承受的伤害，体现承伤规模；坦克/前排位置通常需要结合职责解读。","职责相关"],
+ ["GPM","每分钟经济","Gold Per Minute。选手每分钟获得的游戏经济，反映资源获取速度。","越高通常越好"],
+ ["CSPM","每分钟补刀","Creep Score Per Minute。选手每分钟补刀数，反映兵线与野怪资源获取效率。","越高通常越好"],
+ ["DPGR","伤害 / 经济效率指标","通常用于表达伤害相对经济投入的效率。OP.GG 的精确分子、分母及单位尚需核实。","口径待核实"],
+ ["First Blood","一血相关数据","与本场首个击杀（一血）相关的选手统计字段。接口字段可能表示次数或参与情况，需查看原始返回值确认。","口径待核实"],
+ ["First Tower","首塔相关数据","与摧毁首座防御塔相关的选手统计字段。精确含义（参与、归属或次数）需以接口定义为准。","口径待核实"],
+ ["Winning Rate","胜率","获胜场次占总场次的比例。当前查询同时返回 wins、loses、games 与 winRate。","越高越好"],
+ ["Wards Placed","放置守卫数","接口原始字段 wardsPlaced，表示放置守卫数量。当前项目旧代码将其重命名为 Vision_Score，名称并不严谨。","原始计数"],
+ ["Wards Killed","摧毁守卫数","接口原始字段 wardsKilled，表示摧毁敌方守卫数量。当前项目旧代码将其重命名为 Denied_Vision_Score，不等同于标准排眼得分。","原始计数"],
+ ["Games","比赛场次","选手在该赛事统计范围内参与的比赛数量。","样本量"],
+ ["Wins / Loses","胜场 / 负场","选手在统计范围内的获胜场次与失败场次，可用于核对胜率。","原始计数"],
+ ["Position","比赛位置","选手在赛事统计中的位置标识：Top、Jug、Mid、Bot、Sup。","分类字段"],
+ ["Player / Team","选手 / 战队","player.id、nickName、firstName、lastName 与 team.acronym，用于识别选手和所属战队。","身份字段"]
+];
 function renderMetrics(query=""){
  const q=query.trim().toLowerCase();
  const filtered=metrics.filter(m=>m.join(" ").toLowerCase().includes(q));
