@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import argparse
 import math
+import os
 from datetime import datetime
 from pathlib import Path
 
@@ -21,7 +22,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 # 与项目根目录同级的 radar_charts 目录（会自动创建）
 # backend/main.py -> backend -> project root -> radar_charts
-RADAR_CHARTS_DIR = Path(__file__).resolve().parent.parent / "radar_charts"
+RADAR_CHARTS_DIR = Path(os.environ.get("RADAR_CHARTS_DIR", Path(__file__).resolve().parent.parent / "radar_charts"))
 
 
 def get_all_fields(data, prefix="", fields=None):
@@ -228,6 +229,7 @@ def generate_special_lol_players_radar_charts(
 
     df = df[df["Position"] == f"{Position}"]
     df = df.reset_index(drop=True)
+    print(f"该位置选手数量: {len(df)}")
 
     if df.empty:
         print(f"该赛事没有位符为 {Position} 的选手数据，跳过绘图。")
